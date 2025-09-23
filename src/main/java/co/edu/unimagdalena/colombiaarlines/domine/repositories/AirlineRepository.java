@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface AirlineRepository extends CrudRepository<Airline, Long> {
     Optional<Airline>findAirlinesByCode(String code);
 
-    boolean findByCode(String code);
+    Optional<Airline> findByCode(String code);
 }

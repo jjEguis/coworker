@@ -10,9 +10,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 @ActiveProfiles("test")
-public abstract class AbstractReposirotyIT {
+public abstract class AbstractRepositoryIT {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres: 17.6-alpine3.22");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.6-alpine3.22");
 }
