@@ -28,22 +28,22 @@ public class Flight {
     private OffsetDateTime departureTime;
     @Column(nullable = false)
     private OffsetDateTime arrivalTime;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id", nullable = false)
     private Airline airline;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_airport_id", nullable = false)
     private Airport origin;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "destination_airport_id", nullable = false)
     private Airport destination;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "flight_tags",
     joinColumns = @JoinColumn(name = "flight_id"),
     inverseJoinColumns = @JoinColumn(name = "tag_id"))
     @Builder.Default
     private List<Tag> tags = new ArrayList<>();
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "flight")
     List<SeatInventory> seatInventories = new ArrayList<>();
 
     public void addTag(Tag tag) {

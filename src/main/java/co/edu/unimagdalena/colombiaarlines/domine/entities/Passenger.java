@@ -19,8 +19,7 @@ public class Passenger {
     private String fullName;
     @Column(nullable = false)
     private String email;
-    @OneToOne
-    @JoinColumn(name = "passenger_id",unique = true)
+    @OneToOne(mappedBy = "passenger")
     private PassengerProfile passengerProfile;
 
 }

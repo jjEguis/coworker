@@ -24,7 +24,7 @@ public class SeatInventory {
     private Integer availableSeats;
 
     // 🔗 Relación con Flight
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;
 }
