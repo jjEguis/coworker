@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AirlineRepositoryTest extends AbstractReposirotyIT {
+public class AirlineRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
     AirlineRepository airlineRepo;

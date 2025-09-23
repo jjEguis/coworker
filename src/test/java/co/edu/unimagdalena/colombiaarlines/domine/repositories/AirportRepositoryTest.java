@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AirportRepositoryTest extends AbstractReposirotyIT{
+public class AirportRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
     AirportRepository airportRepo;
