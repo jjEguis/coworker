@@ -1,25 +1,33 @@
 package co.edu.unimagdalena.colombiaarlines.domine.repositories;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
-
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-public class AirlineRepositoryTest extends AbstractRepositoryIT {
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DataJpaTest
+class AirlineRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
-    AirlineRepository airlineRepo;
+    AirlineRepository airlineRepository; // <--- Asegúrate de que esta variable tenga el nombre correcto
 
     @Test
-    @DisplayName("Airline: encuentra por codigo ")
+    @DisplayName("Airline: encuentra aerolínea por código")
     void shouldFindByCode() {
-        //Given
+        // Given
+        Airline airline = Airline.builder().code("AV").name("Avianca").build();
+        airlineRepository.save(airline); // <--- Llama a la variable inyectada
 
-        airlineRepo.save(Airline.builder().code("AV").build());
+        // When
+        Optional<Airline> found = airlineRepository.findAirlinesByCode("AV");
 
-        //When / Then
-        assertThat(airlineRepo.findAirlinesByCode("AV").isPresent());
+        // Then
+        assertThat(found).isPresent();
+        assertThat(found.get().getName()).isEqualTo("Avianca");
     }
 }

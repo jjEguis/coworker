@@ -25,10 +25,10 @@ public class Airport {
     private String name;
     @Column(nullable = false, length = 120)
     private String city;
-    @OneToMany(mappedBy = "airport")
+    @OneToMany(mappedBy = "origin")
     @Builder.Default
     private List<Flight> flightsOrigin = new ArrayList<Flight>();
-    @OneToMany(mappedBy = "airport")
+    @OneToMany(mappedBy ="destination")
     @Builder.Default
     private List<Flight> flightsDestination = new ArrayList<Flight>();
 

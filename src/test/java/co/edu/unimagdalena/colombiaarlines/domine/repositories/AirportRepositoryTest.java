@@ -14,7 +14,7 @@ public class AirportRepositoryTest extends AbstractRepositoryIT {
 
     @Test
     @DisplayName("Airport: buscar por code")
-    void shouldFindAirportByCode(){
+    public void shouldFindAirportByCode(){
 
         airportRepo.save(Airport.builder().code("BOG").build());
 
