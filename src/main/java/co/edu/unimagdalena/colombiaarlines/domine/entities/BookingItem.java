@@ -16,14 +16,16 @@ import java.math.BigDecimal;
 public class BookingItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     private Cabin cabin;
 
+    @JoinColumn(name = "price", nullable = false)
     private BigDecimal price;
 
+    @JoinColumn(name = "segmentOrder",  nullable = false)
     private Integer segmentOrder;
 
     // 🔗 Relación con Booking

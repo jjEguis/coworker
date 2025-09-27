@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 
 public class Passenger {
     @Id
@@ -17,7 +18,7 @@ public class Passenger {
     private Long id;
     @Column(nullable = false)
     private String fullName;
-    @Column(nullable = false)
+    @Column  // (nullable = false) // POST
     private String email;
     @OneToOne(mappedBy = "passenger")
     private PassengerProfile passengerProfile;

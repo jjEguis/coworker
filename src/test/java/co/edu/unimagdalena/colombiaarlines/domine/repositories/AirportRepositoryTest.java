@@ -4,6 +4,13 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.Airport;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,11 +21,12 @@ public class AirportRepositoryTest extends AbstractRepositoryIT {
 
     @Test
     @DisplayName("Airport: buscar por code")
-    void shouldFindAirportByCode(){
+    @Transactional
+    public void shouldFindAirportByCode(){
+        Airport airport = Airport.builder().code("BOG").build();
+        airportRepo.save(airport);
 
-        airportRepo.save(Airport.builder().code("BOG").build());
 
-
-        assertThat(airportRepo.findAirportByCode("BOG").isPresent());
+        assertThat(airportRepo.findAirportByCode("BOG").getCode().equals("BOG")).isTrue();
     }
 }

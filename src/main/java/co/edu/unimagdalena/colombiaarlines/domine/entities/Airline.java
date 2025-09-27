@@ -21,7 +21,7 @@ public class Airline {
     private Long id;
     @Column(nullable = false, length = 120)
     private String code;
-    @Column(nullable = false, length = 120)
+    @Column //(nullable = false, length = 120)
     private String name;
     @OneToMany(mappedBy = "airline")
     @Builder.Default

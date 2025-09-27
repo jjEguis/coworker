@@ -19,18 +19,21 @@ public class Airport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 120)
+    @Column     // (nullable = false)   // Post-Produccion
     private String code;
-    @Column(nullable = false, length = 120)
+    @Column
     private String name;
-    @Column(nullable = false, length = 120)
+    @Column  //  (nullable = false)   // Post-produccion
     private String city;
-    @OneToMany(mappedBy = "airport")
+    // Relación para vuelos que tienen este aeropuerto como ORIGEN
+    @OneToMany(mappedBy = "origin") // 'origin' es el nombre del campo en Flight
     @Builder.Default
-    private List<Flight> flightsOrigin = new ArrayList<Flight>();
-    @OneToMany(mappedBy = "airport")
+    private List<Flight> flightsOrigin = new ArrayList<>();
+
+    // Relación para vuelos que tienen este aeropuerto como DESTINO
+    @OneToMany(mappedBy = "destination") // 'destination' es el nombre del campo en Flight
     @Builder.Default
-    private List<Flight> flightsDestination = new ArrayList<Flight>();
+    private List<Flight> flightsDestination = new ArrayList<>();
 
     public void addFlightOrigin(Flight flight) {
         flightsOrigin.add(flight);

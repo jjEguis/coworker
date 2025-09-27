@@ -19,7 +19,7 @@ public class PassengerProfile {
     private String phone;
     @Column(nullable = false)
     private String countryCode;
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     @JoinColumn(name = "passenger_id",unique = true)
     private Passenger passenger;
 }

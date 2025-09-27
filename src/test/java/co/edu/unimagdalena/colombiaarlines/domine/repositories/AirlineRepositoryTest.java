@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AirlineRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
-    AirlineRepository airlineRepository; // <--- Asegúrate de que esta variable tenga el nombre correcto
+    AirlineRepository airlineRepository;
 
     @Test
     @DisplayName("Airline: encuentra aerolínea por código")
     void shouldFindByCode() {
         // Given
         Airline airline = Airline.builder().code("AV").name("Avianca").build();
-        airlineRepository.save(airline); // <--- Llama a la variable inyectada
+        airlineRepository.save(airline);
 
         // When
         Optional<Airline> found = airlineRepository.findByCode("AV");
