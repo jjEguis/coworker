@@ -25,9 +25,11 @@ public class Booking {
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
     @OneToMany(mappedBy = "booking")
+    @Builder.Default
     private List<BookingItem> items = new ArrayList<>();
 
     public void addItem(BookingItem bookingItem){
+
         items.add(bookingItem);
         bookingItem.setBooking(this);
 

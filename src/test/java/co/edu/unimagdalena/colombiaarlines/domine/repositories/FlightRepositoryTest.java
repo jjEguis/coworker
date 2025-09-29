@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataJpaTest
 class FlightRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
@@ -49,8 +51,8 @@ class FlightRepositoryTest extends AbstractRepositoryIT {
         // Given
         Airline avianca = airlineRepository.save(Airline.builder().code("AV").name("Avianca").build());
         Airline latam = airlineRepository.save(Airline.builder().code("LA").name("LATAM").build());
-        Airport bogota = airportRepository.save(Airport.builder().code("BOG").build());
-        Airport medellin = airportRepository.save(Airport.builder().code("MDE").build());
+        Airport bogota = airportRepository.save(Airport.builder().code("BOG").city("Bogota").build());
+        Airport medellin = airportRepository.save(Airport.builder().code("MDE").city("Medellin").build());
 
         flightRepository.save(Flight.builder().number("AV123").airline(avianca).origin(bogota).destination(medellin).departureTime(OffsetDateTime.now()).arrivalTime(OffsetDateTime.now().plusHours(1)).build());
         flightRepository.save(Flight.builder().number("AV456").airline(avianca).origin(medellin).destination(bogota).departureTime(OffsetDateTime.now()).build());
@@ -71,10 +73,10 @@ class FlightRepositoryTest extends AbstractRepositoryIT {
     @Transactional
     void shouldFindFlightsByOriginAndDestinationAndTimeRange() {
         // Given
-        Airport bogota = airportRepository.save(Airport.builder().code("BOG").build());
-        Airport madrid = airportRepository.save(Airport.builder().code("MAD").build());
-        Airport medellin = airportRepository.save(Airport.builder().code("MDE").build());
-        Airline airline = airlineRepository.save(Airline.builder().code("AV").build());
+        Airport bogota = airportRepository.save(Airport.builder().code("BOG").city("Bogota").build());
+        Airport madrid = airportRepository.save(Airport.builder().code("MAD").city("Madrid").build());
+        Airport medellin = airportRepository.save(Airport.builder().code("MDE").city("Medellin").build());
+        Airline airline = airlineRepository.save(Airline.builder().name("AvVillas").code("AV").build());
 
         OffsetDateTime from = OffsetDateTime.now();
         OffsetDateTime to = from.plusHours(2);
@@ -101,9 +103,9 @@ class FlightRepositoryTest extends AbstractRepositoryIT {
     @Transactional
     void shouldSearchFlightWithAllAssociations() {
         // Given
-        Airport origin = airportRepository.save(Airport.builder().code("BOG").build());
-        Airport destination = airportRepository.save(Airport.builder().code("JFK").build());
-        Airline airline = airlineRepository.save(Airline.builder().code("AA").build());
+        Airport origin = airportRepository.save(Airport.builder().code("BOG").city("Bogota").build());
+        Airport destination = airportRepository.save(Airport.builder().code("JFK").city("John F Kennedy").build());
+        Airline airline = airlineRepository.save(Airline.builder().name("AirAxl").code("AA").build());
         Tag tag = tagRepository.save(Tag.builder().name("promoción").build());
 
         Flight flight = Flight.builder()
@@ -140,8 +142,8 @@ class FlightRepositoryTest extends AbstractRepositoryIT {
         Tag tag3 = tagRepository.save(Tag.builder().name("red-eye").build());
 
         Airline airline = airlineRepository.save(Airline.builder().code("AV").build());
-        Airport origin = airportRepository.save(Airport.builder().code("BOG").build());
-        Airport destination = airportRepository.save(Airport.builder().code("MAD").build());
+        Airport origin = airportRepository.save(Airport.builder().code("BOG").city("Bogota").build());
+        Airport destination = airportRepository.save(Airport.builder().code("MAD").city("Madrid").build());
 
         Flight flight1 = Flight.builder().number("AV101").airline(airline).origin(origin).destination(destination).departureTime(OffsetDateTime.now()).build();
         flight1.addTag(tag1);

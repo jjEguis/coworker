@@ -38,8 +38,8 @@ class BookingRepositoryTest extends AbstractRepositoryIT {
     @Transactional
     void shouldFindBookingsByPassengerEmail() {
         // Given
-        Passenger passenger = passengerRepository.save(new Passenger());
-        passenger.setEmail("juan@demo.com");
+        Passenger passenger = passengerRepository.save(Passenger.builder().email("juan@demo.com").fullName("Juan Perez").build());
+        //
 
         bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now().minusDays(2)).build());
         bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now().minusDays(1)).build());
@@ -47,7 +47,7 @@ class BookingRepositoryTest extends AbstractRepositoryIT {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
 
         // When
-        Page<Booking> bookingsPage = bookingRepository.findBookingByPassenger_EmailOrderByCreatedAtDesc("JUAN@DEMO.COM", pageable);
+        Page<Booking> bookingsPage = bookingRepository.findBookingByPassenger_EmailOrderByCreatedAtDesc("juan@demo.com", pageable);
 
         // Then
         assertThat(bookingsPage.getTotalElements()).isEqualTo(2);
@@ -61,15 +61,23 @@ class BookingRepositoryTest extends AbstractRepositoryIT {
     @Transactional
     void shouldFetchBookingWithAssociations() {
         // Given
-        Passenger passenger = passengerRepository.save(new Passenger());
-        Airport originAirport = airportRepository.save(Airport.builder().code("BOG").build());
-        Airport destinationAirport = airportRepository.save(Airport.builder().code("JFK").build());
-        Airline airline = airlineRepository.save(Airline.builder().code("AV").build());
-        Flight flight = flightRepository.save(Flight.builder().number("AV123").airline(airline).origin(originAirport).destination(destinationAirport).build());
+        Passenger passenger = passengerRepository.save(Passenger.builder().email("juan@demo.com").fullName("Juan Perez").build());
+        //;
+        Airport originAirport = airportRepository.save(Airport.builder().code("BOG").name("ElDorado").city("Bogota").build());
+        Airport destinationAirport = airportRepository.save(Airport.builder().code("JFK").name("John F Kenedy Air").city("Miami").build());
+        Airline airline = airlineRepository.save(Airline.builder().code("AV").name("Avianca").build());
+        Flight flight = flightRepository.save(Flight.builder().number("AV123").departureTime(OffsetDateTime.now().minusDays(1))
+                        .arrivalTime(OffsetDateTime.now()).airline(airline).origin(originAirport).destination(destinationAirport).build());
 
         Booking booking = bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now()).build());
-        booking.addItem(BookingItem.builder().flight(flight).price(BigDecimal.valueOf(500.00)).build());
-        bookingRepository.save(booking);
+        // --- CAMBIO IMPORTANTE AQUÍ ---
+        // booking.addItem() es suficiente. NO NECESITAS LLAMAR A bookingRepository.save(booking) de nuevo.
+        booking.addItem(BookingItem.builder().flight(flight).price(BigDecimal.valueOf(500.00)).segmentOrder(3).build());
+        // Quita la siguiente línea:
+        // bookingRepository.save(booking);
+
+        // Cuando el test termine y la transacción se haga rollback, los cambios en 'booking'
+        // (incluyendo la adición del item) serán detectados y persistidos/deshechos correctamente.
 
         // When
         Booking fetchedBooking = bookingRepository.searchBooking(booking.getId());

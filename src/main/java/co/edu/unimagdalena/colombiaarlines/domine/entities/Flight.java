@@ -22,11 +22,11 @@ public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column //(nullable = false)
     private String number;
     @Column(nullable = false)
     private OffsetDateTime departureTime;
-    @Column(nullable = false)
+    @Column
     private OffsetDateTime arrivalTime;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id", nullable = false)
