@@ -21,9 +21,9 @@ public class Airport {
     private Long id;
     @Column(nullable = false, length = 120)
     private String code;
-    @Column(nullable = false, length = 120)
+    @Column(nullable = true, length = 120)
     private String name;
-    @Column(nullable = false, length = 120)
+    @Column(nullable = true, length = 120)
     private String city;
     @OneToMany(mappedBy = "origin")
     @Builder.Default
