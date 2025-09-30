@@ -44,7 +44,7 @@ class PassengerRepositoryTest extends AbstractRepositoryIT {
         passenger.setEmail("carlos@demo.com");
         passengerRepository.save(passenger);
 
-        PassengerProfile profile = new PassengerProfile();
+        PassengerProfile profile = new PassengerProfile("+57", "CO");
         profile.setPhone("+57-321");
         profile.setCountryCode("CO");
         profile.setPassenger(passenger);

@@ -20,11 +20,9 @@ public class PassengerMapper {
         passenger.setPassengerProfile(toProfileEntity(req.profile()));
     }
 
-    // Método Helper para actualizar la entidad anidada PassengerProfil
     public static void updateProfileEntity(PassengerProfile profile, PassengerDtos.PassengerProfileDto reqProfile) {
         if (reqProfile == null) return;
 
-        // Solo actualiza los campos si son proporcionados
         if (reqProfile.phone() != null) {
             profile.setPhone(reqProfile.phone());
         }
@@ -43,7 +41,6 @@ public class PassengerMapper {
         );
     }
 
-    // Helpers para mapear el perfil
     private static PassengerProfile toProfileEntity(PassengerDtos.PassengerProfileDto dto) {
         if (dto == null) return null;
         return PassengerProfile.builder()

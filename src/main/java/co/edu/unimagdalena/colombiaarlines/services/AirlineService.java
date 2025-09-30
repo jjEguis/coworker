@@ -1,7 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
 import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
