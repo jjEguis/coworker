@@ -6,12 +6,13 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.Booking;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.BookingItem;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookingMapper {
 
-    public static Booking toEntity(BookingDtos.BookingCreateRequest req, Passenger passenger, Set<BookingItem> items) {
+    public static Booking toEntity(BookingDtos.BookingCreateRequest req, Passenger passenger, List<BookingItem> items) {
         return Booking.builder()
                 .createdAt(req.createdAt())
                 .passenger(passenger)
@@ -19,7 +20,7 @@ public class BookingMapper {
                 .build();
     }
 
-    public static void updateEntity(Booking booking, BookingDtos.BookingUpdateRequest req, Set<BookingItem> items) {
+    public static void updateEntity(Booking booking, BookingDtos.BookingUpdateRequest req, List<BookingItem> items) {
         // Normalmente no se cambia passenger ni createdAt
         booking.setItems(items);
     }
