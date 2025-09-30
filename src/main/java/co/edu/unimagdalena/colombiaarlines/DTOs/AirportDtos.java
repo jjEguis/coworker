@@ -1,4 +1,4 @@
-package co.edu.unimagdalena.colombiaarlines.domine.DTOs;
+package co.edu.unimagdalena.colombiaarlines.DTOs;
 
 import java.io.Serializable;
 

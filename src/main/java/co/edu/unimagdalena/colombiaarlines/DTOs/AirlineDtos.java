@@ -1,6 +1,7 @@
-package co.edu.unimagdalena.colombiaarlines.domine.DTOs;
+package co.edu.unimagdalena.colombiaarlines.DTOs;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class AirlineDtos {
     public record AirlineCreateRequest(String code, String name) implements Serializable {}

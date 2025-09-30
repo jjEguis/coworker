@@ -44,7 +44,7 @@ public class Flight {
     @Builder.Default
     private List<Tag> tags = new ArrayList<>();
     @OneToMany(mappedBy = "flight")
-    List<SeatInventory> seatInventories = new ArrayList<>();
+    private List<SeatInventory> seatInventories = new ArrayList<>();
 
     public void addTag(Tag tag) {
         tags.add(tag);

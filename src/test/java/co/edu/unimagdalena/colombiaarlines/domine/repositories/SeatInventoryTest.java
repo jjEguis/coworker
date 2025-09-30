@@ -1,6 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.domine.repositories;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ class SeatInventoryRepositoryTest extends AbstractRepositoryIT {
         Optional<SeatInventory> foundInventory = seatInventoryRepository.findSeatInventoriesByFlight_IdAndCabin(flight.getId(), Cabin.ECONOMY);
 
         // Then
-        assertThat(foundInventory).isPresent();
-        assertThat(foundInventory.get().getAvailableSeats()).isEqualTo(100);
+        Assertions.assertThat(foundInventory).isPresent();
+        Assertions.assertThat(foundInventory.get().getAvailableSeats()).isEqualTo(100);
     }
 
     @Test
@@ -66,7 +67,7 @@ class SeatInventoryRepositoryTest extends AbstractRepositoryIT {
         boolean areSeatsNotAvailable = seatInventoryRepository.availableSeats(flight.getId(), Cabin.BUSINESS, 6);
 
         // Then
-        assertThat(areSeatsAvailable).isTrue();
-        assertThat(areSeatsNotAvailable).isFalse();
+        Assertions.assertThat(areSeatsAvailable).isTrue();
+        Assertions.assertThat(areSeatsNotAvailable).isFalse();
     }
 }
