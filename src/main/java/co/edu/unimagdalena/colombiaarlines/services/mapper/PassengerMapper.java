@@ -1,59 +1,21 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos;
+import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.PassengerProfile;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class PassengerMapper {
-
-    public static Passenger toEntity(PassengerDtos.PassengerCreateRequest req) {
-        return Passenger.builder()
-                .fullName(req.fullName())
-                .email(req.email())
-                .passengerProfile(toProfileEntity(req.profile()))
-                .build();
-    }
-
-    public static void updateEntity(Passenger passenger, PassengerDtos.PassengerUpdateRequest req) {
-        passenger.setFullName(req.fullName());
-        passenger.setEmail(req.email());
-        passenger.setPassengerProfile(toProfileEntity(req.profile()));
-    }
-
-    public static void updateProfileEntity(PassengerProfile profile, PassengerDtos.PassengerProfileDto reqProfile) {
-        if (reqProfile == null) return;
-
-        if (reqProfile.phone() != null) {
-            profile.setPhone(reqProfile.phone());
-        }
-        if (reqProfile.countryCode() != null) {
-            profile.setCountryCode(reqProfile.countryCode());
-        }
-    }
+@Mapper
+public interface PassengerMapper {
+    @Mapping(source = "profile", target = "passengerProfile")
+    Passenger toEntity(PassengerCreateRequest req);
+    @Mapping(source = "passengerProfile", target = "profile")
+    PassengerResponse toResponse(Passenger entity);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "passegerProfile", ignore = true )
+    void updateEntity(PassengerUpdateRequest req, @MappingTarget Passenger entity);
 
 
-    public static PassengerDtos.PassengerResponse toResponse(Passenger passenger) {
-        return new PassengerDtos.PassengerResponse(
-                passenger.getId(),
-                passenger.getFullName(),
-                passenger.getEmail(),
-                toProfileDto(passenger.getPassengerProfile())
-        );
-    }
-
-    private static PassengerProfile toProfileEntity(PassengerDtos.PassengerProfileDto dto) {
-        if (dto == null) return null;
-        return PassengerProfile.builder()
-                .phone(dto.phone())
-                .countryCode(dto.countryCode())
-                .build();
-    }
-
-    private static PassengerDtos.PassengerProfileDto toProfileDto(PassengerProfile profile) {
-        if (profile == null) return null;
-        return new PassengerDtos.PassengerProfileDto(
-                profile.getPhone(),
-                profile.getCountryCode()
-        );
-    }
 }

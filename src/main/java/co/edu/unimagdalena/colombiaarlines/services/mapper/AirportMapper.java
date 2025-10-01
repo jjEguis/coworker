@@ -1,30 +1,20 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos;
+import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airport;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class AirportMapper {
+@Mapper
+public interface AirportMapper {
 
-    public static Airport toEntity(AirportDtos.AirportCreateRequest req) {
-        return Airport.builder()
-                .code(req.code())
-                .name(req.name())
-                .city(req.city())
-                .build();
-    }
+    Airport toEntity(AirportCreateRequest req);
 
-    public static void updateEntity(Airport airport, AirportDtos.AirportUpdateRequest req) {
-        airport.setName(req.name());
-        airport.setCity(req.city());
-    }
+    AirportResponse toResponse(Airport airport);
+    @Mapping(target = "id",ignore = true)
+    void updateEntity(AirportResponse req, @MappingTarget Airport entity);
 
-    public static AirportDtos.AirportResponse toResponse(Airport a) {
-        return new AirportDtos.AirportResponse(
-                a.getId(),
-                a.getCode(),
-                a.getName(),
-                a.getCity()
-        );
-    }
+
 }
 

@@ -1,42 +1,20 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos;
+import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.*;
 import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Booking;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.BookingItem;
-import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+@Mapper
+public interface BookingMapper {
 
-public class BookingMapper {
+    Booking toEntity(BookingCreateRequest req);
 
-    public static Booking toEntity(BookingDtos.BookingCreateRequest req, Passenger passenger, List<BookingItem> items) {
-        return Booking.builder()
-                .createdAt(req.createdAt())
-                .passenger(passenger)
-                .items(items)
-                .build();
-    }
+    @Mapping(target = "id",ignore = true)
+    void updateEntity(BookingUpdateRequest req, @MappingTarget Booking entity);
 
-    public static void updateEntity(Booking booking, BookingDtos.BookingUpdateRequest req, List<BookingItem> items) {
-        // Normalmente no se cambia passenger ni createdAt
-        booking.setItems(items);
-    }
-
-    public static BookingDtos.BookingResponse toResponse(Booking booking) {
-        var items = booking.getItems() == null
-                ? Set.<BookingItemDtos.BookingItemResponse>of()
-                : booking.getItems().stream()
-                .map(BookingItemMapper::toResponse)
-                .collect(Collectors.toSet());
-
-        return new BookingDtos.BookingResponse(
-                booking.getId(),
-                booking.getCreatedAt(),
-                booking.getPassenger() == null ? null : PassengerMapper.toResponse(booking.getPassenger()),
-                items
-        );
-    }
+    BookingResponse toResponse(Booking booking);
 }

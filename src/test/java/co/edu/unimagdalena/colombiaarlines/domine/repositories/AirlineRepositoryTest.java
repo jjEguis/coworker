@@ -1,6 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.domine.repositories;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
+import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,8 @@ class AirlineRepositoryTest extends AbstractRepositoryIT {
     @Test
     @DisplayName("Airline: encuentra aerolínea por código")
     void shouldFindByCode() {
-        // Given
+
+
         Airline airline = Airline.builder().code("AV").name("Avianca").build();
         airlineRepository.save(airline);
 

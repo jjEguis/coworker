@@ -1,29 +1,19 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos;
+import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.BookingItem;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class BookingItemMapper {
+@Mapper
+public interface BookingItemMapper {
 
-    public static BookingItem toEntity(BookingItemDtos.BookingItemCreateRequest req){
-        return BookingItem.builder().cabin(req.cabin()).price(req.price()).segmentOrder(req.segmentOrder()).build();
-    }
+    BookingItem toEntity(BookingItemCreateRequest req);
 
-    public static void updateEntity(BookingItem bookingItem, BookingItemDtos.BookingItemUpdateRequest req, Flight flight) {
-        bookingItem.setFlight(flight); // depende si permites actualizar el vuelo o no
-        bookingItem.setCabin(req.cabin());
-        bookingItem.setPrice(req.price());
-        bookingItem.setSegmentOrder(req.segmentOrder());
-    }
+    @Mapping(target = "id",ignore = true)
+    void updateEntity(BookingItemUpdateRequest req, @MappingTarget BookingItem entity);
 
-    public static BookingItemDtos.BookingItemResponse toResponse(BookingItem b) {
-        return new BookingItemDtos.BookingItemResponse(
-                b.getId(),
-                b.getFlight() == null ? null : FlightMapper.toResponse(b.getFlight()),
-                b.getCabin(),
-                b.getPrice(),
-                b.getSegmentOrder()
-        );
-    }
+    BookingItemResponse toResponse(BookingItem b);
 }

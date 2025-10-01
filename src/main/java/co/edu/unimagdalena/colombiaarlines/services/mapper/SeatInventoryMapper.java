@@ -1,33 +1,18 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos;
+import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.SeatInventory;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-public class SeatInventoryMapper {
+@Mapper
+public interface SeatInventoryMapper {
 
-    public static SeatInventory toEntity(SeatInventoryDtos.SeatInventoryCreateRequest req, Flight flight) {
-        return SeatInventory.builder()
-                .cabin(req.cabin())
-                .totalSeats(req.totalSeats())
-                .availableSeats(req.availableSeats())
-                .flight(flight)
-                .build();
-    }
+    SeatInventory toEntity(SeatInventoryCreateRequest req);
 
-    public static void updateEntity(SeatInventory seatInventory, SeatInventoryDtos.SeatInventoryUpdateRequest req) {
-        seatInventory.setTotalSeats(req.totalSeats());
-        seatInventory.setAvailableSeats(req.availableSeats());
-    }
+    void updateEntity(SeatInventoryUpdateRequest req, @MappingTarget SeatInventory entity);
 
-    public static SeatInventoryDtos.SeatInventoryResponse toResponse(SeatInventory si) {
-        return new SeatInventoryDtos.SeatInventoryResponse(
-                si.getId(),
-                si.getCabin(),
-                si.getTotalSeats(),
-                si.getAvailableSeats(),
-                si.getFlight() != null ? si.getFlight().getId() : null
-        );
-    }
+    SeatInventoryResponse toResponse(SeatInventory si);
 }
 
