@@ -12,7 +12,7 @@ public interface SeatInventoryRepository extends JpaRepository<SeatInventory, Lo
     Optional<SeatInventory> findSeatInventoriesByFlight_IdAndCabin(Long flightId, Cabin cabin);
 
     @Query("""
-           SELECT CASE WHEN COUNT(si.cabin) > :min THEN TRUE ELSE FALSE END
+           SELECT CASE WHEN (si.availableSeats) >= :min THEN TRUE ELSE FALSE END
            FROM SeatInventory si
            JOIN Flight f ON si.flight.id = f.id
            WHERE :flightId = f.id

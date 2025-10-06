@@ -28,12 +28,10 @@ public class BookingItem {
     @JoinColumn(name = "segmentOrder",  nullable = false)
     private Integer segmentOrder;
 
-    // 🔗 Relación con Booking
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
-    // 🔗 Relación con Flight
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;

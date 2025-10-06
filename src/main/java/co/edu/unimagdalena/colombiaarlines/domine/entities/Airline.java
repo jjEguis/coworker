@@ -19,9 +19,9 @@ public class Airline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false)
     private String code;
-    @Column //(nullable = false, length = 120)
+    @Column
     private String name;
     @OneToMany(mappedBy = "airline")
     @Builder.Default

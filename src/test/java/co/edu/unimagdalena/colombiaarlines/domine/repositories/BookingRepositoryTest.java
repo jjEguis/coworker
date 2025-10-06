@@ -4,6 +4,7 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataJpaTest
 class BookingRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
@@ -70,16 +72,8 @@ class BookingRepositoryTest extends AbstractRepositoryIT {
                         .arrivalTime(OffsetDateTime.now()).airline(airline).origin(originAirport).destination(destinationAirport).build());
 
         Booking booking = bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now()).build());
-        // --- CAMBIO IMPORTANTE AQUÍ ---
-        // booking.addItem() es suficiente. NO NECESITAS LLAMAR A bookingRepository.save(booking) de nuevo.
+
         booking.addItem(BookingItem.builder().flight(flight).price(BigDecimal.valueOf(500.00)).segmentOrder(3).build());
-        // Quita la siguiente línea:
-        // bookingRepository.save(booking);
-
-        // Cuando el test termine y la transacción se haga rollback, los cambios en 'booking'
-        // (incluyendo la adición del item) serán detectados y persistidos/deshechos correctamente.
-
-        // When
         Booking fetchedBooking = bookingRepository.searchBooking(booking.getId());
 
         // Then

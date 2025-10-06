@@ -1,6 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.domine.repositories;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.BookingItem;
+import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,5 +30,5 @@ public interface BookingItemRepository extends JpaRepository<BookingItem,Long> {
             """)
 
         Long seatsSold(@Param("id") Long id,
-                       @Param("cabin") Long cabin);
+                       @Param("cabin") Cabin cabin);
 }

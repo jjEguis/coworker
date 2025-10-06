@@ -16,9 +16,9 @@ public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column
     private String fullName;
-    @Column  // (nullable = false) // POST
+    @Column
     private String email;
     @OneToOne(mappedBy = "passenger")
     private PassengerProfile passengerProfile;

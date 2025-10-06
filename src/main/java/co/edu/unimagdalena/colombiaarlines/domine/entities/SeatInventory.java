@@ -23,8 +23,6 @@ public class SeatInventory {
     private Integer totalSeats;
     @Column(nullable = false)
     private Integer availableSeats;
-
-    // 🔗 Relación con Flight
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;

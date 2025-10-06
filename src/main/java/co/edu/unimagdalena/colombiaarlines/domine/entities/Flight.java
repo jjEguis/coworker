@@ -22,20 +22,20 @@ public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column //(nullable = false)
+    @Column
     private String number;
-    @Column(nullable = false)
+    @Column
     private OffsetDateTime departureTime;
     @Column
     private OffsetDateTime arrivalTime;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "airline_id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "airline_id")
     private Airline airline;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "origin_airport_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "origin_airport_id")
     private Airport origin;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "destination_airport_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "destination_airport_id")
     private Airport destination;
     @ManyToMany
     @JoinTable(name = "flight_tags",
@@ -44,6 +44,7 @@ public class Flight {
     @Builder.Default
     private List<Tag> tags = new ArrayList<>();
     @OneToMany(mappedBy = "flight")
+    @Builder.Default
     private List<SeatInventory> seatInventories = new ArrayList<>();
 
     public void addTag(Tag tag) {

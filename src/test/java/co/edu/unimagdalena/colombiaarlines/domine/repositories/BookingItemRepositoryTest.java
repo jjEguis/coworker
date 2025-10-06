@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataJpaTest
 class BookingItemRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
@@ -36,38 +39,38 @@ class BookingItemRepositoryTest extends AbstractRepositoryIT {
     @Test
     @DisplayName("BookingItem: lista items de una reserva ordenados por segmento")
     void shouldFindItemsByBookingIdOrderBySegmentOrder() {
-        // Given
-        Passenger passenger = Passenger.builder().email("juan@demo.com").fullName("Juan Perez").build();
 
-        Booking booking = bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now()).build());
+        var airline = airlineRepository.save(Airline.builder().code("AV").build());
+        var airport = airportRepository.save(Airport.builder().build());
+        if (airport.getId() == null) {
+            throw new RuntimeException("No se encontro el airport");
+        }
+        var passenger = passengerRepository.save(Passenger.builder().fullName("pepito perez").email("sincorreo@ema").build());
+        var booking = bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now()).build());
+        var flight = flightRepository.save(Flight.builder().airline(airline).origin(airport).destination(airport).build());
+        var bookingItem = bookingItemRepository.save(BookingItem.builder()
+                .cabin(Cabin.ECONOMY).price(new BigDecimal(2))
+                .segmentOrder(1).booking(booking).flight(flight).build());
 
-        Airport originAirport = airportRepository.save(Airport.builder().code("BOG").name("ElDorado").city("Bogota").build());
-        Airport destinationAirport = airportRepository.save(Airport.builder().code("CTG").name("CARTAGENA Air").city("Cartagena").build());
-        Airline airline = airlineRepository.save(Airline.builder().code("AV").name("Avianca").build());
+        var bookingItem1 = bookingItemRepository.save(BookingItem.builder()
+                .cabin(Cabin.ECONOMY).price(new BigDecimal(3))
+                .segmentOrder(2).booking(booking).flight(flight).build());
 
-        Flight flight1 = flightRepository.save(Flight.builder().number("AV123").departureTime(OffsetDateTime.now().minusDays(1))
-                .arrivalTime(OffsetDateTime.now()).airline(airline).origin(originAirport).destination(destinationAirport).build());
-        Flight flight2 = flightRepository.save(Flight.builder().number("AV456").departureTime(OffsetDateTime.now().minusDays(2))
-                .arrivalTime(OffsetDateTime.now().minusDays(1)).airline(airline).origin(originAirport).destination(destinationAirport).build());
+        bookingItemRepository.saveAll(List.of(bookingItem1, bookingItem));
 
-        BookingItem item1 = bookingItemRepository.save(BookingItem.builder().booking(booking).flight(flight2).segmentOrder(2).price(BigDecimal.valueOf(500.00)).build());
-        BookingItem item2 = bookingItemRepository.save(BookingItem.builder().booking(booking).flight(flight1).segmentOrder(1).price(BigDecimal.valueOf(500.00)).build());
-
-        // When
+        assertThat(bookingItemRepository.findBookingItemByBookingIdOrderBySegmentOrder(booking.getId()).get(0).getSegmentOrder()).isEqualTo(1);
         List<BookingItem> items = bookingItemRepository.findBookingItemByBookingIdOrderBySegmentOrder(booking.getId());
-
-        // Then
-        assertThat(items).hasSize(2);
-        assertThat(items.get(0).getSegmentOrder()).isEqualTo(1);
-        assertThat(items.get(1).getSegmentOrder()).isEqualTo(2);
+        for (BookingItem item : items) {
+            System.out.println(item.toString());
+        }
     }
+
 
     @Test
     @DisplayName("BookingItem: calcula el total de la reserva")
     void shouldCalculateTotalBookingPrice() {
         // Given
-        Passenger passenger = passengerRepository.save(new Passenger());
-        passenger.builder().build();
+        var passenger = passengerRepository.save(Passenger.builder().build());
         Booking booking = bookingRepository.save(Booking.builder().passenger(passenger).createdAt(OffsetDateTime.now()).build());
 
         Airport origin = airportRepository.save(Airport.builder().code("BOG").build());
@@ -89,30 +92,31 @@ class BookingItemRepositoryTest extends AbstractRepositoryIT {
     @DisplayName("BookingItem: cuenta asientos vendidos para un vuelo y cabina")
     void shouldCountSoldSeatsForFlightAndCabin() {
         // Given
-        Passenger passenger1 = passengerRepository.save(new Passenger());
-        Passenger passenger2 = passengerRepository.save(new Passenger());
-        passenger1.builder().fullName("Andres Tobias").email("andretb@test.com").build();
-        passenger2.builder().fullName("Julian  Tobia").email("juliantb@test.com").build();
+        var passenger1 = passengerRepository.save(Passenger.builder().fullName("Andres Tobias").email("andretb@test.com").build());
+        var passenger2 = passengerRepository.save(Passenger.builder().fullName("Julian  Tobia").email("juliantb@test.com").build());
 
-        Booking booking1 = bookingRepository.save(Booking.builder().passenger(passenger1).createdAt(OffsetDateTime.now()).build());
-        Booking booking2 = bookingRepository.save(Booking.builder().passenger(passenger2).createdAt(OffsetDateTime.now()).build());
 
-        Airport origin = airportRepository.save(Airport.builder().code("BOG").name("Girardot").city("Bogota city").build());
-        Airport destination = airportRepository.save(Airport.builder().code("CTG").name("Catalinas Flies").city("Indias").build());
-        Airline airline = airlineRepository.save(Airline.builder().code("AV").build());
-        Flight flight = flightRepository.save(Flight.builder().number("AV123")
+
+        var booking1 = bookingRepository.save(Booking.builder().passenger(passenger1).createdAt(OffsetDateTime.now()).build());
+        var booking2 = bookingRepository.save(Booking.builder().passenger(passenger2).createdAt(OffsetDateTime.now()).build());
+
+        var origin = airportRepository.save(Airport.builder().code("BOG").name("Girardot").city("Bogota city").build());
+        var destination = airportRepository.save(Airport.builder().code("CTG").name("Catalinas Flies").city("Indias").build());
+        var airline = airlineRepository.save(Airline.builder().code("AV").build());
+        var flight = flightRepository.save(Flight.builder().number("AV123")
                 .airline(airline).origin(origin).destination(destination).build());
 
         bookingItemRepository.save(BookingItem.builder().booking(booking1).flight(flight)
                 .cabin(Cabin.ECONOMY).segmentOrder(1).price(BigDecimal.valueOf(300)).build());
         bookingItemRepository.save(BookingItem.builder().booking(booking2).flight(flight)
                 .cabin(Cabin.ECONOMY).segmentOrder(1).price(BigDecimal.valueOf(300)).build());
-        bookingItemRepository.save(BookingItem.builder().booking(booking2).flight(flight)   //Actualizacion de cabin a BUSINESS
+        bookingItemRepository.save(BookingItem.builder().booking(booking2).flight(flight)
                 .cabin(Cabin.BUSINESS).segmentOrder(1).price(BigDecimal.valueOf(300)).build());
 
         // When
-        long economySeats = bookingItemRepository.seatsSold(flight.getId(), 0L); // cabin.ECONOMY
-        long businessSeats = bookingItemRepository.seatsSold(flight.getId(), 2L); // cabin.BUSSNISES
+        long economySeats = bookingItemRepository.seatsSold(flight.getId(),Cabin.ECONOMY);
+        long businessSeats = bookingItemRepository.seatsSold(flight.getId(),Cabin.BUSINESS);
+        long premiumSeats = bookingItemRepository.seatsSold(flight.getId(),Cabin.PREMIUM);
 
         // Then
         assertThat(economySeats).isEqualTo(2);

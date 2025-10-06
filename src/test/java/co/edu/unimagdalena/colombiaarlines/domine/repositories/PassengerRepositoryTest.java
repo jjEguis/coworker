@@ -5,11 +5,13 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.PassengerProfile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataJpaTest
 class PassengerRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
@@ -39,16 +41,18 @@ class PassengerRepositoryTest extends AbstractRepositoryIT {
     @DisplayName("Passenger: encuentra por email (ignore case) y hace fetch del profile")
     void shouldFindByEmailIgnoreCaseAndFetchProfile() {
         // Given
-        Passenger passenger = new Passenger();
-        passenger.setFullName("Carlos Gomez");
-        passenger.setEmail("carlos@demo.com");
-        passengerRepository.save(passenger);
 
         PassengerProfile profile = new PassengerProfile();
         profile.setPhone("+57-321");
         profile.setCountryCode("CO");
-        profile.setPassenger(passenger);
         passengerProfileRepository.save(profile);
+
+        Passenger passenger = new Passenger();
+        passenger.setFullName("Carlos Gomez");
+        passenger.setEmail("carlos@demo.com");
+        passenger.setPassengerProfile(profile);
+        passengerRepository.save(passenger);
+
 
         // When
         Optional<Passenger> foundPassenger = passengerRepository.findByEmailIgnoreCaseAndPassengerProfile("CARLOS@DEMO.COM");
