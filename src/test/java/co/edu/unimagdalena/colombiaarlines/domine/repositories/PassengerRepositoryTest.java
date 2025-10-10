@@ -42,9 +42,7 @@ class PassengerRepositoryTest extends AbstractRepositoryIT {
     void shouldFindByEmailIgnoreCaseAndFetchProfile() {
         // Given
 
-        PassengerProfile profile = new PassengerProfile();
-        profile.setPhone("+57-321");
-        profile.setCountryCode("CO");
+        PassengerProfile profile = PassengerProfile.builder().phone("31250064").countryCode("CO").build();
         passengerProfileRepository.save(profile);
 
         Passenger passenger = new Passenger();

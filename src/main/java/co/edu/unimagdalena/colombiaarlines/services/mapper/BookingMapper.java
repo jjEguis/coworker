@@ -21,7 +21,6 @@ public class BookingMapper {
     }
 
     public static void updateEntity(Booking booking, BookingUpdateRequest req, List<BookingItem> items) {
-        // Normalmente no se cambia passenger ni createdAt
         booking.setItems(items);
     }
 

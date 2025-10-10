@@ -17,8 +17,12 @@ public class AirlineMapper {
         var flights = a.getFlights() == null ? List.<FlightResponse>of()
                     : a.getFlights().stream().map(FlightMapper::toResponse).toList();
 
-        return new AirlineResponse(a.getId(),a.getCode(),a.getName());
+        return new AirlineResponse(a.getId(),a.getCode(),a.getName(),flights);
     }
 
+    public static void patch(Airline entity, AirlineDtos.AirlineUpdateRequest req){
+        if(req.name() != null) entity.setName(req.name());
+        if(req.code() != null) entity.setCode(req.code());
+    }
 
 }

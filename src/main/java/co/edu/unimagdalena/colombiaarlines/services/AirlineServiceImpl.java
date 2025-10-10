@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 
 public class AirlineServiceImpl implements AirlineService {
 
@@ -40,6 +39,19 @@ public class AirlineServiceImpl implements AirlineService {
     public List<AirlineResponse> list() {
         return repo.findAll().stream().map(AirlineMapper::toResponse).toList();
     }
+
+    @Override
+    public AirlineResponse update(Long id, AirlineUpdateRequest req) {
+
+        var airline = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Airline not found with id: " + id));
+
+        AirlineMapper.patch(airline, req);
+
+        var updated = repo.save(airline);
+        return AirlineMapper.toResponse(updated);
+    }
+
 
     @Override
     public void delete(Long id){

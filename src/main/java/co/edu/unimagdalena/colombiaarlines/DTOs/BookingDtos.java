@@ -9,15 +9,13 @@ import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos.BookingItemCreat
 import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos.BookingItemResponse; // Para respuesta de items anidados
 
 public class BookingDtos {
-    // Para Create, puedes necesitar el ID del pasajero y una lista de items a crear
-    public record BookingCreateRequest(Long passengerId, OffsetDateTime createdAt, List<BookingItemCreateRequest> items) implements Serializable {}
-    public record BookingUpdateRequest(List<BookingItemCreateRequest> items) implements Serializable {} // createdAt y passengerId usualmente no se actualizan
+    public record BookingCreateRequest(Long passengerId, OffsetDateTime createdAt, List<BookingItemResponse> items) implements Serializable {}
+    public record BookingUpdateRequest(List<BookingItemCreateRequest> items) implements Serializable {}
 
-    // Para Response, con DTOs de relaciones completas
     public record BookingResponse(
             Long id,
             OffsetDateTime createdAt,
-            PassengerResponse passenger, // O solo Long passengerId si no necesitas el detalle
-            List<BookingItemResponse> items // O List, según tu mapeo
+            PassengerResponse passenger,
+            List<BookingItemResponse> items
     ) implements Serializable {}
 }

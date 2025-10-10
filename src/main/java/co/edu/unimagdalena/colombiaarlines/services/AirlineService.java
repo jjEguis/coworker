@@ -1,7 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
 import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,5 +9,6 @@ public interface AirlineService {
     AirlineResponse get(Long id);
     AirlineResponse getByCode(String code);
     List<AirlineResponse> list();
+    AirlineResponse update(Long id, AirlineUpdateRequest Req);
     void delete(Long id);
 }

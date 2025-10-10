@@ -4,38 +4,41 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.AirlineResponse; // Para el DTO anidado
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.AirportResponse; // Para el DTO anidado
 
 public class FlightDtos {
-    // Para Create/Update, podrías necesitar solo los IDs de las entidades relacionadas
-    public record FlightCreateRequest(String number,
-                                      OffsetDateTime departureTime,
-                                      OffsetDateTime arrivalTime,
-                                      Long airlineId,
-                                      Long originAirportId,
-                                      Long destinationAirportId,
-                                      List<Long> tagsId) implements Serializable {}
 
+    public record FlightCreateRequest(
+            String number,
+            OffsetDateTime departureTime,
+            OffsetDateTime arrivalTime,
+            Long airlineId,
+            Long originId,
+            Long destinationId,
+            List<Long> tagIds
+    ) implements Serializable {}
 
-    public record FlightUpdateRequest(String number,
-                                      OffsetDateTime departureTime,
-                                      OffsetDateTime arrivalTime,
-                                      Long airlineId,
-                                      Long originAirportId,
-                                      Long destinationAirportId,
-                                      List<Long> tagsId) implements Serializable {}
+    public record FlightUpdateRequest(
+            String number,
+            OffsetDateTime departureTime,
+            OffsetDateTime arrivalTime,
+            Long airlineId,
+            Long originId,
+            Long destinationId,
+            List<Long> tagIds
+    ) implements Serializable {}
 
-    // Para Response, puedes incluir los DTOs completos de las relaciones o solo sus IDs/nombres
     public record FlightResponse(
             Long id,
             String number,
             OffsetDateTime departureTime,
             OffsetDateTime arrivalTime,
-            AirlineResponse airline, // O solo Long airlineId; si no necesitas el detalle completo
-            AirportResponse origin,
-            AirportResponse destination,
-            List<Long> tagsId,
-            List<SeatInventoryDtos.SeatInventoryResponse> seatInventories
+            Long airlineId,
+            String airlineName,
+            Long originId,
+            String originCode,
+            Long destinationId,
+            String destinationCode,
+            List<Long> tagIds,
+            List<Long> seatInventoryIds
     ) implements Serializable {}
 }

@@ -61,7 +61,7 @@ class FlightRepositoryTest extends AbstractRepositoryIT {
         Pageable pageable = PageRequest.of(0, 10);
 
         // When
-        List<Flight> flights = flightRepository.findByAirlineName("Avianca", pageable);
+        Page<Flight> flights = flightRepository.findByAirlineName("Avianca", pageable);
 
         // Then
         assertThat(flights).hasSize(2);

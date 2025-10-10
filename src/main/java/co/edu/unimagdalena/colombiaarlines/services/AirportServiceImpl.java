@@ -13,14 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 
 public class AirportServiceImpl implements AirportService {
 
     private final AirportRepository repo;
 
-    @Override @Transactional
+    @Override
     public AirportResponse create(AirportCreateRequest req) {
         return AirportMapper.toResponse(repo.save(AirportMapper.toEntity(req)));
     }

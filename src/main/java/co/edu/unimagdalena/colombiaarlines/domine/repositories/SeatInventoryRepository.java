@@ -23,4 +23,5 @@ public interface SeatInventoryRepository extends JpaRepository<SeatInventory, Lo
     boolean availableSeats(@Param("flightId")Long flightId,
                            @Param("cabin")Cabin cabin,
                            @Param("min") int min);
+
 }
