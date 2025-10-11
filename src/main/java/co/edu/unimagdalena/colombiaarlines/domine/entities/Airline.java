@@ -27,12 +27,16 @@ public class Airline {
     @Builder.Default
     private Set<Flight> flights = new HashSet<Flight>();
 
+    // Para implementar en el mapper
     public void addFlight(Flight flight) {
         flights.add(flight);
         flight.setAirline(this);
     }
 
-
-
+    // Para implementar en el mapper
+    public void removeFlight(Flight flight) {
+        flights.remove(flight);
+        flight.setAirline(null);
+    }
 
 }

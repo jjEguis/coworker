@@ -44,8 +44,10 @@ public class Flight {
     @Builder.Default
     private List<Tag> tags = new ArrayList<>();
     @OneToMany(mappedBy = "flight")
+    @Builder.Default
     private List<SeatInventory> seatInventories = new ArrayList<>();
 
+    // PUCHAO puro metodo helper
     public void addTag(Tag tag) {
         tags.add(tag);
         tag.getFlights().add(this);
@@ -54,5 +56,10 @@ public class Flight {
     public void addSeatInventory(SeatInventory seatInventory) {
         seatInventories.add(seatInventory);
         seatInventory.setFlight(this);
+    }
+
+    public void removeSeatInventory(SeatInventory seatInventory) {
+        seatInventories.remove(seatInventory);
+        seatInventory.setFlight(null);
     }
 }

@@ -1,10 +1,8 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
 import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.*;
-import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airport;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirportRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -53,7 +50,7 @@ public class AirportServiceImplTest {
                 .id(2L).code("BOG").name("El Dorado").city("Bogotá").build();
         when(repo.findById(2L)).thenReturn(Optional.of(airport));
 
-        var res = service.getById(2L);
+        var res = service.get(2L);
 
         assertThat(res.id()).isEqualTo(2L);
         assertThat(res.code()).isEqualTo("BOG");

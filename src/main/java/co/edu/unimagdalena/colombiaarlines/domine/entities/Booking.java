@@ -28,11 +28,8 @@ public class Booking {
     @Builder.Default
     private List<BookingItem> items = new ArrayList<>();
 
-    public void addItem(BookingItem bookingItem){
-
+    public void addItem(BookingItem bookingItem) {
         items.add(bookingItem);
         bookingItem.setBooking(this);
-
     }
-
 }

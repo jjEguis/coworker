@@ -9,12 +9,13 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.SeatInventory;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.FlightRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.SeatInventoryRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
-import co.edu.unimagdalena.colombiaarlines.services.mapper.SeatInventoryMapper;
+import co.edu.unimagdalena.colombiaarlines.services.mapper.SeatInventoryMapper; // Interfaz MapStruct
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,37 +23,53 @@ import java.util.List;
 public class SeatInventoryServiceImpl implements SeatInventoryService {
 
     private final SeatInventoryRepository inventoryRepo;
-    private final FlightRepository flightRepo; // Necesario para la relación
+    private final FlightRepository flightRepo;
+    private final SeatInventoryMapper inventoryMapper; // Inyección de MapStruct
 
     @Override
     public SeatInventoryResponse create(SeatInventoryCreateRequest req) {
-        // Lógica de negocio: Validar que los asientos disponibles no excedan el total.
+        // Validar que los asientos disponibles no excedan el total.
         if (req.availableSeats() > req.totalSeats()) {
             throw new IllegalArgumentException("Available seats cannot exceed total seats.");
         }
-        
-        // Buscar Flight para la relación
+        // Buscamos la relacion
         Flight flight = flightRepo.findById(req.flightId())
                 .orElseThrow(() -> new NotFoundException("Flight %d not found".formatted(req.flightId())));
 
-        SeatInventory inventory = SeatInventoryMapper.toEntity(req, flight);
+        // Mappear  campos no relacionados
+        SeatInventory inventory = inventoryMapper.toEntity(req, flight);
 
-        return SeatInventoryMapper.toResponse(inventoryRepo.save(inventory));
+        // Gestionar ambos lados de la relacion
+        flight.addSeatInventory(inventory); // Se encarga de todo
+        //inventory.setFlight(flight); // Unnecessary
+
+
+        // Guardar y Retornar
+        return inventoryMapper.toResponse(inventoryRepo.save(inventory));
     }
 
-    @Override 
+    @Override
     @Transactional(readOnly = true)
     public SeatInventoryResponse get(Long id) {
         return inventoryRepo.findById(id)
-                .map(SeatInventoryMapper::toResponse)
+                .map(inventoryMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Seat Inventory %d not found".formatted(id)));
+    }
+
+    // pa las reservas de asientos
+    @Override
+    @Transactional(readOnly = true)
+    public SeatInventoryResponse findByFlightAndCabin(Long flightId, String cabin) {
+        return inventoryRepo.findByFlightIdAndCabin(flightId, Cabin.valueOf(cabin))
+                .map(inventoryMapper::toResponse)
+                .orElseThrow(() -> new NotFoundException("Inventory not found for Flight %d and Cabin %s".formatted(flightId, cabin)));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<SeatInventoryResponse> list() {
         return inventoryRepo.findAll().stream()
-                .map(SeatInventoryMapper::toResponse)
+                .map(inventoryMapper::toResponse)
                 .toList();
     }
 
@@ -60,35 +77,24 @@ public class SeatInventoryServiceImpl implements SeatInventoryService {
     public SeatInventoryResponse update(Long id, SeatInventoryUpdateRequest req) {
         SeatInventory inventory = inventoryRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Seat Inventory %d not found".formatted(id)));
-                
-        // Lógica de negocio: Revalidar la restricción al actualizar
+
         if (req.availableSeats() > req.totalSeats()) {
             throw new IllegalArgumentException("Available seats cannot exceed total seats.");
         }
 
-        // Mapeo de actualización (no necesitamos buscar Flight de nuevo)
-        SeatInventoryMapper.updateEntity(inventory, req);
+        inventoryMapper.updateEntity(req, inventory);
 
-        return SeatInventoryMapper.toResponse(inventoryRepo.save(inventory));
+        return inventoryMapper.toResponse(inventoryRepo.save(inventory));
     }
 
     @Override
     public void delete(Long id) {
-        if (!inventoryRepo.existsById(id)) {
-            throw new NotFoundException("Seat Inventory %d not found".formatted(id));
-        }
+        SeatInventory inventory = inventoryRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Seat Inventory %d not found".formatted(id)));
+
+        inventory.getFlight().removeSeatInventory(inventory); // Helper method; gestiona ambos lados de la relacion
+
         inventoryRepo.deleteById(id);
     }
 
-
-
-
-    @Transactional(readOnly = true)
-    @Override
-    public SeatInventoryResponse findByFlightAndCabin(Long flightId, Cabin cabin) {
-        // metodo creado en seatInventoryRepository
-        return inventoryRepo.findByFlightIdAndCabin(flightId, cabin)
-                .map(SeatInventoryMapper::toResponse)
-                .orElseThrow(() -> new NotFoundException("Inventory not found for Flight %d and Cabin %s".formatted(flightId, cabin)));
-    }
 }

@@ -9,5 +9,6 @@ public interface AirlineService {
     AirlineResponse get(Long id);
     AirlineResponse getByCode(String code);
     List<AirlineResponse> list();
+    AirlineResponse update(Long id, AirlineUpdateRequest req);
     void delete(Long id);
 }

@@ -6,7 +6,7 @@ import co.edu.unimagdalena.colombiaarlines.DTOs.TagDtos.TagUpdateRequest;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Tag;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.TagRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
-import co.edu.unimagdalena.colombiaarlines.services.mapper.TagMapper;
+import co.edu.unimagdalena.colombiaarlines.services.mapper.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,18 +19,19 @@ import java.util.List;
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
+    private final TagMapper tagMapper;
 
     @Override
     public TagResponse create(TagCreateRequest req) {
-        Tag tag = TagMapper.toEntity(req);
-        return TagMapper.toResponse(tagRepository.save(tag));
+        Tag tag = tagMapper.toEntity(req);
+        return tagMapper.toResponse(tagRepository.save(tag));
     }
 
     @Override 
     @Transactional(readOnly = true)
     public TagResponse get(Long id) {
         return tagRepository.findById(id)
-                .map(TagMapper::toResponse)
+                .map(tagMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Tag %d not found".formatted(id)));
     }
 
@@ -38,7 +39,7 @@ public class TagServiceImpl implements TagService {
     @Transactional(readOnly = true)
     public List<TagResponse> list() {
         return tagRepository.findAll().stream()
-                .map(TagMapper::toResponse)
+                .map(tagMapper::toResponse)
                 .toList();
     }
 
@@ -47,10 +48,9 @@ public class TagServiceImpl implements TagService {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tag %d not found".formatted(id)));
 
-        // Utiliza el método de actualización del Mapper estático
-        TagMapper.updateEntity(tag, req); 
+        tagMapper.updateEntity(req, tag);
 
-        return TagMapper.toResponse(tagRepository.save(tag));
+        return tagMapper.toResponse(tagRepository.save(tag));
     }
 
     @Override

@@ -11,12 +11,10 @@ public class BookingDtos {
 
     public record BookingCreateRequest(Long passengerId, OffsetDateTime createdAt, Set<BookingItemCreateRequest> items) implements Serializable {}
     public record BookingUpdateRequest(Set<BookingItemCreateRequest> items) implements Serializable {} // createdAt y passengerId usualmente no se actualizan
-
-    // Para Response, con DTOs de relaciones completas
     public record BookingResponse(
             Long id,
             OffsetDateTime createdAt,
-            PassengerResponse passenger, // O solo Long passengerId si no necesitas el detalle
-            Set<BookingItemResponse> items // O List, según tu mapeo
+            PassengerResponse passenger,
+            Set<BookingItemResponse> items
     ) implements Serializable {}
 }

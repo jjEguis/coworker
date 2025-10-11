@@ -7,8 +7,10 @@ import java.util.List;
 public interface AirportService {
 
     AirportResponse create(AirportCreateRequest req);
-    AirportResponse getById(Long id);
+    AirportResponse get(Long id);
     AirportResponse getByCode(String code);
     List<AirportResponse> list();
+    AirportResponse update(Long id, AirportUpdateRequest req);
     void delete(Long id);
+    // ADD methods add and remove
 }

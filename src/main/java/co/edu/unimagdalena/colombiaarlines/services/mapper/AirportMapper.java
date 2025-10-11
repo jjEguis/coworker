@@ -6,15 +6,21 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AirportMapper {
-
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "flightsOrigin", ignore = true)
+    @Mapping(target = "flightsDestination", ignore = true)
     Airport toEntity(AirportCreateRequest req);
 
-    AirportResponse toResponse(Airport airport);
-    @Mapping(target = "id",ignore = true)
-    void updateEntity(AirportResponse req, @MappingTarget Airport entity);
 
+    AirportResponse toResponse(Airport airport);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "code", ignore = true) // Se asume que no se actualiza
+    @Mapping(target = "flightsOrigin", ignore = true)
+    @Mapping(target = "flightsDestination", ignore = true)
+    void updateEntity(AirportUpdateRequest req, @MappingTarget Airport entity);
 
 }
 

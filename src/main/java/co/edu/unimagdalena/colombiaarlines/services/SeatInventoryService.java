@@ -20,5 +20,5 @@ public interface SeatInventoryService {
 
     void delete(Long id);
 
-    SeatInventoryResponse findByFlightAndCabin(Long flightId, Cabin cabin);
+    SeatInventoryResponse findByFlightAndCabin(Long flightId, String cabin);
 }

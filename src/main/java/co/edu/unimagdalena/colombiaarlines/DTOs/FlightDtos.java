@@ -25,7 +25,7 @@ public class FlightDtos {
                                       Long originAirportId,
                                       Long destinationAirportId,
                                       List<Long> tagsId) implements Serializable {}
-
+    {}
     // Para Response, puedes incluir los DTOs completos de las relaciones o solo sus IDs/nombres
     public record FlightResponse(
             Long id,

@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name= "airports")
 @Getter
@@ -25,6 +26,7 @@ public class Airport {
     private String name;
     @Column  //  (nullable = false)   // Post-produccion
     private String city;
+
     // Relación para vuelos que tienen este aeropuerto como ORIGEN
     @OneToMany(mappedBy = "origin") // 'origin' es el nombre del campo en Flight
     @Builder.Default
@@ -35,6 +37,8 @@ public class Airport {
     @Builder.Default
     private List<Flight> flightsDestination = new ArrayList<>();
 
+    // Helper Methods
+
     public void addFlightOrigin(Flight flight) {
         flightsOrigin.add(flight);
         flight.setOrigin(this);
@@ -43,6 +47,16 @@ public class Airport {
     public void addFlightDestination(Flight flight) {
         flightsDestination.add(flight);
         flight.setDestination(this);
+    }
+
+    public void removeFlightOrigin(Flight flight) {
+        flightsOrigin.remove(flight);
+        flight.setOrigin(null);
+    }
+
+    public void removeFlightDestination(Flight flight) {
+        flightsDestination.remove(flight);
+        flight.setDestination(null);
     }
 
 }

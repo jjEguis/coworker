@@ -4,6 +4,7 @@ import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingCreateRequest
 import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingResponse;
 import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingUpdateRequest;
 import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos.BookingItemCreateRequest;
+import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos.SeatInventoryResponse;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Booking;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.BookingItem;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
@@ -31,81 +32,80 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepo;
     private final PassengerRepository passengerRepo;
     private final FlightRepository flightRepo;
+    private final SeatInventoryService seatInventoryService;
+
+    private final BookingMapper bookingMapper;
+    private final BookingItemMapper bookingItemMapper;
 
     @Override
     public BookingResponse create(BookingCreateRequest req) {
-        // 1. LÓGICA DE NEGOCIO: Buscar y validar el pasajero principal
         Passenger passenger = passengerRepo.findById(req.passengerId())
                 .orElseThrow(() -> new NotFoundException("Passenger %d not found".formatted(req.passengerId())));
-        
-        // 2. LÓGICA DE NEGOCIO: Procesar y validar cada Booking Item
-        List<BookingItem> items = req.items().stream()
+
+        Set<BookingItem> items = req.items().stream()
                 .map(this::createBookingItem)
-                .toList();
+                .collect(Collectors.toSet()); // Usa set como en los DTOs
 
-        // 3. Mapear DTO -> Entidad. Se asume que BookingCreateRequest no tiene 'createdAt', se asigna aquí.
-        Booking booking = BookingMapper.toEntity(req, passenger, items);
-        booking.setCreatedAt(OffsetDateTime.now());
+        Booking booking = bookingMapper.toEntity(req);
+        if (booking.getCreatedAt() == null) {
+            booking.setCreatedAt(OffsetDateTime.now());
+        }
 
-        // 4. Establecer la relación bidireccional (BookingItem -> Booking)
         items.forEach(item -> item.setBooking(booking));
 
-        // 5. Persistir y Mapear a Respuesta
-        return BookingMapper.toResponse(bookingRepo.save(booking));
+        return bookingMapper.toResponse(bookingRepo.save(booking));
     }
 
     /**
-     * Para crear y validar un solo BookingItem.
+     * Lógica auxiliar para crear, validar asiento y mapear un solo BookingItem.
      */
     private BookingItem createBookingItem(BookingItemCreateRequest req) {
-
         Flight flight = flightRepo.findById(req.flightId())
                 .orElseThrow(() -> new NotFoundException("Flight %d not found for booking item".formatted(req.flightId())));
 
-        // Lógica de validación (e.g.: disponibilidad de asientos) irí
+        SeatInventoryResponse inventory = seatInventoryService.findByFlightAndCabin(req.flightId(), req.cabin().name());
 
-        BookingItem item = BookingItemMapper.toEntity(req);
+        // Asumimos que se necesita al menos 1 asiento
+        if (inventory.availableSeats() < 1) {
+            throw new IllegalStateException("No available seats found for Flight %d in Cabin %s".formatted(req.flightId(), req.cabin()));
+        }
+
+        BookingItem item = bookingItemMapper.toEntity(req);
         item.setFlight(flight);
         return item;
     }
 
+    @Override
+    public BookingResponse update(Long id, BookingUpdateRequest req) {
+        Booking booking = bookingRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Booking %d not found".formatted(id)));
+
+        Set<BookingItem> updatedItems = req.items().stream()
+                .map(this::createBookingItem)
+                .collect(Collectors.toSet());
+
+        bookingMapper.updateEntity(req, booking);
+
+        updatedItems.forEach(item -> item.setBooking(booking));
+
+        return bookingMapper.toResponse(bookingRepo.save(booking));
+    }
 
     @Override
     @Transactional(readOnly = true)
     public BookingResponse get(Long id) {
         return bookingRepo.findById(id)
-                .map(BookingMapper::toResponse)
+                .map(bookingMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Booking %d not found".formatted(id)));
     }
 
-
-    // Operación LIST, UPDATE y DELETE le falta
     @Override
     @Transactional(readOnly = true)
     public List<BookingResponse> list() {
         return bookingRepo.findAll().stream()
-                .map(BookingMapper::toResponse)
+                .map(bookingMapper::toResponse)
                 .toList();
     }
-
-    @Override
-    public BookingResponse update(Long id, BookingUpdateRequest req) {
-        //Busca la entidad Booking existente.
-        Booking booking = bookingRepo.findById(id)
-                .orElseThrow(() -> new NotFoundException("Booking %d not found".formatted(id)));
-
-        List<BookingItem> updatedItems = req.items().stream()
-                .map(this::createBookingItem)
-                .toList();
-
-        BookingMapper.updateEntity(booking, req, updatedItems);
-
-        updatedItems.forEach(item -> item.setBooking(booking));
-
-        // 5. Persistir y Mapear la Respuesta.
-        return BookingMapper.toResponse(bookingRepo.save(booking));
-    }
-
 
     @Override
     public void delete(Long id) {

@@ -3,23 +3,23 @@ package co.edu.unimagdalena.colombiaarlines.services.mapper;
 import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.*;
 import co.edu.unimagdalena.colombiaarlines.DTOs.FlightDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
+import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-@Mapper
-public interface AirlineMapper {
+import java.util.Set;
 
-    @Mapping(target = "code")
+@Mapper(componentModel = "spring")
+public interface AirlineMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "flights", ignore = true)
     Airline toEntity(AirlineCreateRequest req);
 
-    @Mapping(target = "code")
-    AirlineResponse toResponse(Airline airline);
+    AirlineResponse toResponse(Airline airline); // Deberia agregar Set<Flight> flights aqui?
 
-    // Actualiza una entidad existente con datos del UpdateRequest
     @Mapping(target = "id", ignore = true)
-    void updateEntity(AirlineUpdateRequest dto, @MappingTarget Airline entity);
-
-
-
+    @Mapping(target = "code", ignore = true)
+    @Mapping(target = "flights", ignore = true)
+    void updateEntity(AirlineUpdateRequest dto, @MappingTarget Airline entity); // Airline no es dueño de la relacion con Flight
 }
