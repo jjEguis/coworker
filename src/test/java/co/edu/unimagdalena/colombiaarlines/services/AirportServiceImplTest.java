@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airport;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirportRepository;
 import org.junit.jupiter.api.Test;

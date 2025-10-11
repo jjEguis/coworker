@@ -1,8 +1,8 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingCreateRequest;
-import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingResponse;
-import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingUpdateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingDtos.BookingCreateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingDtos.BookingResponse;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingDtos.BookingUpdateRequest;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Booking;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.BookingRepository;

@@ -1,6 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.PassengerProfile;
 

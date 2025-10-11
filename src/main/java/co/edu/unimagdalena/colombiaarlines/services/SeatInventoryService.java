@@ -1,10 +1,9 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos.SeatInventoryCreateRequest;
-import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos.SeatInventoryResponse;
-import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos.SeatInventoryUpdateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.SeatInventoryDtos.SeatInventoryCreateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.SeatInventoryDtos.SeatInventoryResponse;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.SeatInventoryDtos.SeatInventoryUpdateRequest;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

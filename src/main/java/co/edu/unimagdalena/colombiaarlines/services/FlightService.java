@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.FlightDtos.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

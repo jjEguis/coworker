@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.BookingItemDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
 import co.edu.unimagdalena.colombiaarlines.services.BookingItemService;
 import jakarta.validation.Valid;
@@ -35,6 +34,17 @@ public class BookingItemController {
     @GetMapping
     public ResponseEntity<List<BookingItemResponse>> listByBooking(@PathVariable Long bookingId) {
         return ResponseEntity.ok(service.findByBookingIdSegmentOrder(bookingId));
+    }
+
+    @GetMapping("/{id}/total")
+    public ResponseEntity<BigDecimal> getTotalPrice(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getTotalPrice(id));
+    }
+
+    @GetMapping("/{flightId}/seats-sold/{cabin}")
+    public ResponseEntity<Long> getSeatsSold(@PathVariable Long flightId,
+                                             @PathVariable Cabin cabin) {
+        return ResponseEntity.ok(service.seatsSold(flightId, cabin));
     }
 
     @PutMapping("/{itemId}")

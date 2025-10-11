@@ -1,4 +1,4 @@
-package co.edu.unimagdalena.colombiaarlines.DTOs;
+package co.edu.unimagdalena.colombiaarlines.api.DTOs;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;

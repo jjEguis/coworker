@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.FlightDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airport;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;

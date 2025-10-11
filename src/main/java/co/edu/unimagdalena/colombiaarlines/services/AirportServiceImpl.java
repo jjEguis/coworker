@@ -1,10 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos;
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirportRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
-import co.edu.unimagdalena.colombiaarlines.services.mapper.AirlineMapper;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.AirportMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +37,18 @@ public class AirportServiceImpl implements AirportService {
     @Override @Transactional(readOnly = true)
     public List<AirportResponse> list() {
         return repo.findAll().stream().map(AirportMapper::toResponse).toList();
+    }
+
+    @Override
+    public void update(Long id, AirportUpdateRequest req) {
+
+        var airport = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Airline not found with id: " + id));
+
+        AirportMapper.updateEntity(airport, req);
+
+        var updated = repo.save(airport);
+        AirportMapper.toResponse(updated);
     }
 
     @Override

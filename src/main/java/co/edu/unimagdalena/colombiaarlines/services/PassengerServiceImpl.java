@@ -1,8 +1,8 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerCreateRequest;
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerResponse;
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerUpdateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.PassengerCreateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.PassengerResponse;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.PassengerUpdateRequest;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.PassengerRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.PassengerMapper;

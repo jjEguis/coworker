@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.AirportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +39,13 @@ public class AirportController {
     @GetMapping
     public ResponseEntity<List<AirportResponse>> list() {
         return ResponseEntity.ok(service.list());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AirportResponse> update(@PathVariable Long id,
+                                                  @Valid @RequestBody AirportUpdateRequest req) {
+        service.update(id, req);
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @DeleteMapping("/{id}")

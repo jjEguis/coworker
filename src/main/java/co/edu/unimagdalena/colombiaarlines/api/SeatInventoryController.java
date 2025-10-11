@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
 import co.edu.unimagdalena.colombiaarlines.services.SeatInventoryService;
 import jakarta.validation.Valid;

@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirlineRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.AirlineMapper;

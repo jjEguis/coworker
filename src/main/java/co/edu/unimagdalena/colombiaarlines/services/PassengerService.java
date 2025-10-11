@@ -1,11 +1,8 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerCreateRequest;
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerResponse;
-import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerUpdateRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.PassengerCreateRequest;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.PassengerResponse;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.PassengerUpdateRequest;
 
 import java.util.List;
 

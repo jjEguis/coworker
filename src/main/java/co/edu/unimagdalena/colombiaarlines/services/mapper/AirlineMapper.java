@@ -1,8 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.*;
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos;
-import co.edu.unimagdalena.colombiaarlines.DTOs.FlightDtos.*;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirlineDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
 
 import java.util.List;

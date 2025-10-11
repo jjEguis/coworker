@@ -1,8 +1,8 @@
-package co.edu.unimagdalena.colombiaarlines.DTOs;
+package co.edu.unimagdalena.colombiaarlines.api.DTOs;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import co.edu.unimagdalena.colombiaarlines.DTOs.FlightDtos.FlightResponse; // Para el DTO anidado
+
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
 
 public class BookingItemDtos {

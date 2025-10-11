@@ -1,6 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.TagDtos;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.TagDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Tag;
 
 public class TagMapper {

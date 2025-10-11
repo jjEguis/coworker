@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.FlightDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.*;
 
 public class FlightMapper {

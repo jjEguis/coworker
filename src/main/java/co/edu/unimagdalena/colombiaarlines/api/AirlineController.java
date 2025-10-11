@@ -1,6 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirlineDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.AirlineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

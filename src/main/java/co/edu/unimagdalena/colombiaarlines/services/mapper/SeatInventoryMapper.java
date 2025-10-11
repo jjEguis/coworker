@@ -1,6 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.SeatInventoryDtos;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.SeatInventoryDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.SeatInventory;
 

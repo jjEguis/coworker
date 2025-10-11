@@ -1,7 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
-import co.edu.unimagdalena.colombiaarlines.DTOs.AirportDtos.*;
-
 import java.util.List;
 
 public interface AirportService {
@@ -10,5 +8,6 @@ public interface AirportService {
     AirportResponse getById(Long id);
     AirportResponse getByCode(String code);
     List<AirportResponse> list();
+    void update(Long id, AirportUpdateRequest req);
     void delete(Long id);
 }
