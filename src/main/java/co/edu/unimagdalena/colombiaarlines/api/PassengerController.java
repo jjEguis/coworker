@@ -16,11 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class PassengerController {
+
     private final PassengerService service;
 
     @PostMapping
     public ResponseEntity<PassengerResponse> create(@Valid @RequestBody PassengerCreateRequest req,
-                                                                  UriComponentsBuilder uri){
+                                                     UriComponentsBuilder uri) {
         var body = service.create(req);
         var location = uri.path("/api/passengers/{id}").buildAndExpand(body.id()).toUri();
         return ResponseEntity.created(location).body(body);
@@ -31,26 +32,25 @@ public class PassengerController {
         return ResponseEntity.ok(service.get(id));
     }
 
-
     @GetMapping
     public ResponseEntity<List<PassengerResponse>> list() {
         return ResponseEntity.ok(service.list());
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<PassengerResponse> update(@PathVariable Long id,
-                                                              @Valid @RequestBody PassengerUpdateRequest req) {
-        return ResponseEntity.ok(service.update(id, req));
-    }
-
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<PassengerResponse> getByEmail(@PathVariable String email) {
         return ResponseEntity.ok(service.getByEmail(email));
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<PassengerResponse> getByEmailAndPassengerProfile(@PathVariable String email) {
+    @GetMapping("/email/{email}/with-profile")
+    public ResponseEntity<PassengerResponse> getByEmailWithProfile(@PathVariable String email) {
         return ResponseEntity.ok(service.getByEmailAndPassengerProfile(email));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PassengerResponse> update(@PathVariable Long id,
+                                                     @Valid @RequestBody PassengerUpdateRequest req) {
+        return ResponseEntity.ok(service.update(id, req));
     }
 
     @DeleteMapping("/{id}")

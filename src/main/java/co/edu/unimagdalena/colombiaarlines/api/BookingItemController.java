@@ -5,7 +5,6 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
 import co.edu.unimagdalena.colombiaarlines.services.BookingItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +23,8 @@ public class BookingItemController {
 
     @PostMapping
     public ResponseEntity<BookingItemResponse> add(@PathVariable Long bookingId,
-                                                       @Valid @RequestBody BookingItemCreateRequest req,
-                                                       UriComponentsBuilder uriBuilder) {
+                                                    @Valid @RequestBody BookingItemCreateRequest req,
+                                                    UriComponentsBuilder uriBuilder) {
         var body = service.addItem(bookingId, req);
         var location = uriBuilder
                 .path("/api/bookings/{bookingId}/items/{itemId}")
@@ -34,33 +33,21 @@ public class BookingItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookingItemResponse>> getByBookingId(@PathVariable Long bookingId) {
+    public ResponseEntity<List<BookingItemResponse>> listByBooking(@PathVariable Long bookingId) {
         return ResponseEntity.ok(service.findByBookingIdSegmentOrder(bookingId));
     }
 
-    @GetMapping("{id}")
-    public BigDecimal getTotalPrice(@PathVariable Long id){
-       return service.getTotalPrice(id);
-    }
-
-    @GetMapping("/{flightId}/{cabin}")
-    public Long seatsSold(@PathVariable Long flightId,@PathVariable Cabin cabin){
-        return service.seatsSold(flightId, cabin);
-    }
-
-    @PutMapping
-    public ResponseEntity<BookingItemResponse> updateBookingItem(@RequestBody BookingItemUpdateRequest req){
+    @PutMapping("/{itemId}")
+    public ResponseEntity<BookingItemResponse> update(@PathVariable Long bookingId,
+                                                       @PathVariable Long itemId,
+                                                       @Valid @RequestBody BookingItemUpdateRequest req) {
         return ResponseEntity.ok(service.updateBookingItem(req));
     }
 
-    @GetMapping
-    public ResponseEntity<List<BookingItemResponse>> list() {
-        return ResponseEntity.ok(service.list());
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteBookingItem(@PathVariable Long id){
-       service.delete(id);
-       return ResponseEntity.noContent().build();
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<Void> delete(@PathVariable Long bookingId,
+                                        @PathVariable Long itemId) {
+        service.delete(itemId);
+        return ResponseEntity.noContent().build();
     }
 }
