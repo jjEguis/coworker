@@ -5,7 +5,6 @@ import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingResponse;
 import co.edu.unimagdalena.colombiaarlines.DTOs.BookingDtos.BookingUpdateRequest;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Booking;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Flight;
-import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.BookingRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.FlightRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.PassengerRepository;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

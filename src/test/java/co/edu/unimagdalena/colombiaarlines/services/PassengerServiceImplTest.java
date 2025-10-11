@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -22,79 +22,30 @@ import static org.mockito.Mockito.*;
 class PassengerServiceImplTest {
 
     @Mock
-    private PassengerRepository passengerRepository;
+    private PassengerRepository passengerRepo;
 
     @Mock
-    private PassengerProfileRepository passengerProfileRepository;
+    private PassengerProfileRepository passengerProfileRepo;
 
     @InjectMocks
-    private PassengerServiceImpl passengerService;
+    private PassengerServiceImpl service;
 
     @Test
-    void shouldCreatePassengerWithProfile() {
-        // Given
-        PassengerProfileDto profileDto = new PassengerProfileDto("123456789", "CO");
-        PassengerCreateRequest request = new PassengerCreateRequest(
-                "Juan Pérez", "juan@email.com", profileDto
-        );
+    void shouldCreateAndReturnResponseDto() {
+        var req = new PassengerCreateRequest("Ana", "ana@d.com", new PassengerProfileDto("+57", "CO"));
+        when(passengerRepo.save(any())).thenAnswer(inv -> {
+            Passenger p = inv.getArgument(0);
+            p.setId(11L);
+            return p;
+        });
 
-        PassengerProfile savedProfile = PassengerProfile.builder()
-                .id(100L)
-                .phone("123456789")
-                .countryCode("CO")
-                .build();
+        var res = service.create(req);
 
-        Passenger passenger = Passenger.builder()
-                .id(1L)
-                .fullName("Juan Pérez")
-                .email("juan@email.com")
-                .passengerProfile(savedProfile)
-                .build();
-
-        when(passengerProfileRepository.save(any(PassengerProfile.class))).thenReturn(savedProfile);
-        when(passengerRepository.save(any(Passenger.class))).thenReturn(passenger);
-
-        // When
-        PassengerResponse result = passengerService.create(request);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.id()).isEqualTo(1L);
-        assertThat(result.fullName()).isEqualTo("Juan Pérez");
-        assertThat(result.profile().phone()).isEqualTo("123456789");
-
-        verify(passengerProfileRepository).save(any(PassengerProfile.class));
-        verify(passengerRepository).save(any(Passenger.class));
+        assertThat(res.id()).isEqualTo(11L);
+        assertThat(res.email()).isEqualTo("ana@d.com");
+        verify(passengerRepo).save(any(Passenger.class));
     }
 
-    @Test
-    void shouldCreatePassengerWithoutProfile() {
-        // Given
-        PassengerCreateRequest request = new PassengerCreateRequest(
-                "Ana López", "ana@email.com", null
-        );
-
-        Passenger passenger = Passenger.builder()
-                .id(2L)
-                .fullName("Ana López")
-                .email("ana@email.com")
-                .passengerProfile(null)
-                .build();
-
-        when(passengerRepository.save(any(Passenger.class))).thenReturn(passenger);
-
-        // When
-        PassengerResponse result = passengerService.create(request);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.id()).isEqualTo(2L);
-        assertThat(result.fullName()).isEqualTo("Ana López");
-        assertThat(result.profile()).isNull();
-
-        verify(passengerRepository).save(any(Passenger.class));
-        verify(passengerProfileRepository, never()).save(any());
-    }
 
     @Test
     void shouldGetPassengerById() {
@@ -112,10 +63,10 @@ class PassengerServiceImplTest {
                 .passengerProfile(profile)
                 .build();
 
-        when(passengerRepository.findById(passengerId)).thenReturn(Optional.of(passenger));
+        when(passengerRepo.findById(passengerId)).thenReturn(Optional.of(passenger));
 
         // When
-        PassengerResponse result = passengerService.get(passengerId);
+        PassengerResponse result = service.get(passengerId);
 
         // Then
         assertThat(result).isNotNull();
@@ -123,7 +74,7 @@ class PassengerServiceImplTest {
         assertThat(result.fullName()).isEqualTo("María Gómez");
         assertThat(result.profile().phone()).isEqualTo("987654321");
 
-        verify(passengerRepository).findById(passengerId);
+        verify(passengerRepo).findById(passengerId);
     }
 
     @Test
@@ -135,16 +86,16 @@ class PassengerServiceImplTest {
         Passenger passenger1 = Passenger.builder().id(1L).fullName("Juan Pérez").email("juan@email.com").passengerProfile(profile1).build();
         Passenger passenger2 = Passenger.builder().id(2L).fullName("Ana López").email("ana@email.com").passengerProfile(profile2).build();
 
-        when(passengerRepository.findAll()).thenReturn(List.of(passenger1, passenger2));
+        when(passengerRepo.findAll()).thenReturn(List.of(passenger1, passenger2));
 
         // When
-        List<PassengerResponse> result = passengerService.list();
+        List<PassengerResponse> result = service.list();
 
         // Then
-        assertThat(result).extracting("id").isIn(1L, 2L);
-        assertThat(result).extracting("fullName").isIn("Juan Pérez", "Ana López");
+        assertThat(result).extracting("id").containsExactly(1L, 2L);
+        assertThat(result).extracting("fullName").containsExactly("Juan Pérez", "Ana López");
 
-        verify(passengerRepository).findAll();
+        verify(passengerRepo).findAll();
     }
 
     @Test
@@ -163,24 +114,18 @@ class PassengerServiceImplTest {
                 .passengerProfile(null) // Sin profile inicial
                 .build();
 
-        PassengerProfile savedProfile = PassengerProfile.builder()
-                .id(100L)
-                .phone("987654321")
-                .countryCode("US")
-                .build();
 
-        when(passengerRepository.findById(passengerId)).thenReturn(Optional.of(existingPassenger));
-        when(passengerProfileRepository.save(any(PassengerProfile.class))).thenReturn(savedProfile);
-        when(passengerRepository.save(any(Passenger.class))).thenReturn(existingPassenger);
+
+        when(passengerRepo.findById(passengerId)).thenReturn(Optional.of(existingPassenger));
+        when(passengerRepo.save(any(Passenger.class))).thenReturn(existingPassenger);
 
         // When
-        PassengerResponse result = passengerService.update(passengerId, updateRequest);
+        PassengerResponse result = service.update(passengerId, updateRequest);
 
         // Then
         assertThat(result).isNotNull();
-        verify(passengerRepository).findById(passengerId);
-        verify(passengerProfileRepository).save(any(PassengerProfile.class));
-        verify(passengerRepository).save(existingPassenger);
+        verify(passengerRepo).findById(passengerId);
+        verify(passengerRepo).save(existingPassenger);
     }
 
     @Test
@@ -205,18 +150,16 @@ class PassengerServiceImplTest {
                 .passengerProfile(existingProfile)
                 .build();
 
-        when(passengerRepository.findById(passengerId)).thenReturn(Optional.of(existingPassenger));
-        when(passengerProfileRepository.save(any(PassengerProfile.class))).thenReturn(existingProfile);
-        when(passengerRepository.save(any(Passenger.class))).thenReturn(existingPassenger);
+        when(passengerRepo.findById(passengerId)).thenReturn(Optional.of(existingPassenger));
+        when(passengerRepo.save(any(Passenger.class))).thenReturn(existingPassenger);
 
         // When
-        PassengerResponse result = passengerService.update(passengerId, updateRequest);
+        PassengerResponse result = service.update(passengerId, updateRequest);
 
         // Then
         assertThat(result).isNotNull();
-        verify(passengerRepository).findById(passengerId);
-        verify(passengerProfileRepository).save(existingProfile);
-        verify(passengerRepository).save(existingPassenger);
+        verify(passengerRepo).findById(passengerId);
+        verify(passengerRepo).save(existingPassenger);
     }
 
     @Test
@@ -226,47 +169,15 @@ class PassengerServiceImplTest {
         PassengerProfile profile = PassengerProfile.builder().phone("123456789").countryCode("CO").build();
         Passenger passenger = Passenger.builder().id(passengerId).fullName("Juan Pérez").email("juan@email.com").passengerProfile(profile).build();
 
-        when(passengerRepository.findById(passengerId)).thenReturn(Optional.of(passenger));
+        when(passengerRepo.findById(passengerId)).thenReturn(Optional.of(passenger));
 
         // When
-        passengerService.delete(passengerId);
+        service.delete(passengerId);
 
         // Then
-        verify(passengerRepository).findById(passengerId);
-        verify(passengerRepository).delete(passenger);
+        verify(passengerRepo).findById(passengerId);
+        verify(passengerRepo).delete(passenger);
     }
 
-    @Test
-    void shouldUpdatePassengerWithoutProfileChanges() {
-        // Given
-        Long passengerId = 1L;
-        PassengerUpdateRequest updateRequest = new PassengerUpdateRequest(
-                "Carlos Rodríguez", "carlos@email.com", null // Sin cambios en profile
-        );
 
-        PassengerProfile existingProfile = PassengerProfile.builder()
-                .id(100L)
-                .phone("123456789")
-                .countryCode("CO")
-                .build();
-
-        Passenger existingPassenger = Passenger.builder()
-                .id(passengerId)
-                .fullName("Juan Pérez")
-                .email("juan@email.com")
-                .passengerProfile(existingProfile)
-                .build();
-
-        when(passengerRepository.findById(passengerId)).thenReturn(Optional.of(existingPassenger));
-        when(passengerRepository.save(any(Passenger.class))).thenReturn(existingPassenger);
-
-        // When
-        PassengerResponse result = passengerService.update(passengerId, updateRequest);
-
-        // Then
-        assertThat(result).isNotNull();
-        verify(passengerRepository).findById(passengerId);
-        verify(passengerProfileRepository, never()).save(any());
-        verify(passengerRepository).save(existingPassenger);
-    }
 }

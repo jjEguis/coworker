@@ -18,7 +18,6 @@ public interface BookingItemRepository extends JpaRepository<BookingItem,Long> {
             LEFT JOIN bi.booking b
             WHERE :id = b.id
            """)
-
     BigDecimal getTotalPrice(@Param("id") Long id);
 
 
@@ -28,7 +27,7 @@ public interface BookingItemRepository extends JpaRepository<BookingItem,Long> {
             WHERE :id = f.id
             AND :cabin = bi.cabin
             """)
+    Long seatsSold(@Param("id") Long id,
+                   @Param("cabin") Cabin cabin);
 
-        Long seatsSold(@Param("id") Long id,
-                       @Param("cabin") Cabin cabin);
 }

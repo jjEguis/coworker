@@ -3,8 +3,6 @@ package co.edu.unimagdalena.colombiaarlines.services;
 import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerCreateRequest;
 import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerResponse;
 import co.edu.unimagdalena.colombiaarlines.DTOs.PassengerDtos.PassengerUpdateRequest;
-import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
-import co.edu.unimagdalena.colombiaarlines.domine.entities.PassengerProfile;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.PassengerRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.PassengerMapper;
@@ -31,21 +29,19 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public PassengerResponse get(Long id) {
         var passenger = passengerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pasajero no encontrado con id: " + id));
+                .orElseThrow(() -> new NotFoundException("Pasajero no encontrado con id: " + id));
         return PassengerMapper.toResponse(passenger);
     }
 
-    @Override
+    @Override @Transactional(readOnly = true)
     public List<PassengerResponse> list() {
-        return passengerRepository.findAll().stream()
-                .map(PassengerMapper::toResponse)
-                .toList();
+        return passengerRepository.findAll().stream().map(PassengerMapper::toResponse).toList();
     }
 
     @Override
     public PassengerResponse update(Long id, PassengerUpdateRequest req) {
         var passenger = passengerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pasajero no encontrado con id: " + id));
+                .orElseThrow(() -> new NotFoundException("Pasajero no encontrado con id: " + id));
 
         PassengerMapper.updateEntity(passenger,req);
         passengerRepository.save(passenger);
@@ -53,10 +49,22 @@ public class PassengerServiceImpl implements PassengerService {
         return PassengerMapper.toResponse(passenger);
     }
 
+    @Override @Transactional(readOnly = true)
+    public PassengerResponse getByEmail(String email) {
+        return passengerRepository.findByEmailIgnoreCase(email).map(PassengerMapper::toResponse)
+                .orElseThrow(() -> new NotFoundException("Member email %s not found".formatted(email)));
+    }
+
+    @Override @Transactional(readOnly = true)
+    public PassengerResponse getByEmailAndPassengerProfile(String email) {
+        return passengerRepository.findByEmailIgnoreCaseAndPassengerProfile(email).map(PassengerMapper::toResponse)
+                .orElseThrow(() -> new NotFoundException("Member email %s not found".formatted(email)));
+    }
+
     @Override
     public void delete(Long id) {
         var passenger = passengerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pasajero no encontrado con id: " + id));
+                .orElseThrow(() -> new NotFoundException("Pasajero no encontrado con id: " + id));
         passengerRepository.delete(passenger);
     }
 }
