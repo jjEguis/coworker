@@ -8,6 +8,8 @@ import co.edu.unimagdalena.colombiaarlines.domine.repositories.BookingItemReposi
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.BookingRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.FlightRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingDtos.*;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingItemDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.BookingItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

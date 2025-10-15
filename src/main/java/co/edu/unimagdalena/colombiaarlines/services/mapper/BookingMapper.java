@@ -1,5 +1,5 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
-
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingDtos.*;
 import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingItemDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Booking;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.BookingItem;

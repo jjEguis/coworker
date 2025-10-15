@@ -1,4 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.services;
+
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingItemDtos.*;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Cabin;
 
 import java.math.BigDecimal;

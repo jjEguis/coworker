@@ -1,5 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirlineDtos.*;
+
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirlineRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.AirlineMapper;
@@ -22,8 +24,7 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override @Transactional(readOnly = true)
     public AirlineResponse get(Long id){
-        return repo.findById(id).map(AirlineMapper::toResponse)
-                .orElseThrow(()->new NotFoundException("Airline not found"));
+        return repo.findById(id).map(AirlineMapper::toResponse).orElseThrow(()->new NotFoundException("Airline not found"));
     }
 
 

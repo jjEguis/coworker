@@ -1,5 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirportDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.AirportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -7,6 +7,8 @@ import co.edu.unimagdalena.colombiaarlines.domine.entities.Passenger;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.BookingRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.FlightRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.PassengerRepository;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingDtos.*;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.BookingItemDtos.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

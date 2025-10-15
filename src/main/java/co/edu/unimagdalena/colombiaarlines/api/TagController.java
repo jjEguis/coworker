@@ -1,6 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
 import co.edu.unimagdalena.colombiaarlines.services.TagService;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.TagDtos.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

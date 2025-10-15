@@ -1,5 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirlineDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.AirlineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class AirlineController {
         return ResponseEntity.ok(service.get(id));
     }
 
-    @GetMapping("/{code}")
+    @GetMapping("/code/{code}")
     public ResponseEntity<AirlineResponse> get(@PathVariable String code) {
         return ResponseEntity.ok(service.getByCode(code));
     }

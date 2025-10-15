@@ -1,10 +1,11 @@
 package co.edu.unimagdalena.colombiaarlines.services.mapper;
 
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.FlightDtos;
 import co.edu.unimagdalena.colombiaarlines.domine.entities.*;
 
 public class FlightMapper {
 
-    public static Flight toEntity(FlightCreateRequest request) {
+    public static Flight toEntity(FlightDtos.FlightCreateRequest request) {
         return Flight.builder()
                 .number(request.number())
                 .departureTime(request.departureTime())
@@ -12,7 +13,7 @@ public class FlightMapper {
                 .build();
     }
 
-    public static void updateEntity(Flight flight, FlightUpdateRequest request) {
+    public static void updateEntity(Flight flight, FlightDtos.FlightUpdateRequest request) {
         if (request.number() != null) {
             flight.setNumber(request.number());
         }
@@ -24,10 +25,10 @@ public class FlightMapper {
         }
     }
 
-    public static FlightResponse toResponse(Flight flight) {
+    public static FlightDtos.FlightResponse toResponse(Flight flight) {
         if (flight == null) return null;
 
-        return new FlightResponse(
+        return new FlightDtos.FlightResponse(
                 flight.getId(),
                 flight.getNumber(),
                 flight.getDepartureTime(),

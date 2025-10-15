@@ -1,5 +1,6 @@
 package co.edu.unimagdalena.colombiaarlines.api;
 
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.PassengerDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.PassengerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class PassengerController {
 
     @PostMapping
     public ResponseEntity<PassengerResponse> create(@Valid @RequestBody PassengerCreateRequest req,
-                                                     UriComponentsBuilder uri) {
+                                                                  UriComponentsBuilder uri) {
         var body = service.create(req);
         var location = uri.path("/api/passengers/{id}").buildAndExpand(body.id()).toUri();
         return ResponseEntity.created(location).body(body);

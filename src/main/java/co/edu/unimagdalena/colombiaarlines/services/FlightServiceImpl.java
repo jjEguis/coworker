@@ -9,6 +9,7 @@ import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirportRepository
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.FlightRepository;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.TagRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.FlightDtos.*;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.FlightMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

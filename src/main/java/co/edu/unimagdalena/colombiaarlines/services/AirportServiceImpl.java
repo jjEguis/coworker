@@ -1,11 +1,14 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
+
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirportRepository;
 import co.edu.unimagdalena.colombiaarlines.exception.NotFoundException;
 import co.edu.unimagdalena.colombiaarlines.services.mapper.AirportMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirportDtos.*;
 
 import java.util.List;
 

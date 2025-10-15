@@ -2,6 +2,7 @@ package co.edu.unimagdalena.colombiaarlines.services;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airport;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirportRepository;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirportDtos.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

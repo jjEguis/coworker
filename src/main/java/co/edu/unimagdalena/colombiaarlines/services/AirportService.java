@@ -1,5 +1,7 @@
 package co.edu.unimagdalena.colombiaarlines.services;
 
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirportDtos.*;
+
 import java.util.List;
 
 public interface AirportService {

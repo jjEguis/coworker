@@ -2,6 +2,7 @@ package co.edu.unimagdalena.colombiaarlines.services;
 
 import co.edu.unimagdalena.colombiaarlines.domine.entities.Airline;
 import co.edu.unimagdalena.colombiaarlines.domine.repositories.AirlineRepository;
+import co.edu.unimagdalena.colombiaarlines.api.DTOs.AirlineDtos.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
