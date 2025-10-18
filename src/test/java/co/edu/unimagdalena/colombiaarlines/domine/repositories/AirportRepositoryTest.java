@@ -5,10 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@ActiveProfiles("test")
 public class AirportRepositoryTest extends AbstractRepositoryIT {
 
     @Autowired
@@ -18,7 +20,7 @@ public class AirportRepositoryTest extends AbstractRepositoryIT {
     @DisplayName("Airport: buscar por code")
     @Transactional
     public void shouldFindAirportByCode(){
-        Airport airport = Airport.builder().code("BOG").build();
+        Airport airport = Airport.builder().name("Dorado").city("BOGOTA").code("BOG").build();
         airportRepo.save(airport);
 
 
